@@ -15,7 +15,9 @@
 
 
 let grupStudent = [];
+let student = grupStudent;
 
+console.log(student)
 function makeStudent(name, age) {
     return {
         name: name,
@@ -25,7 +27,6 @@ function makeStudent(name, age) {
 }
 
 function studentManagement(student) {
-    var student = grupStudent.slice(0);
 
     return {
         addStudent: function(name, age) {
@@ -47,24 +48,24 @@ function studentManagement(student) {
         },
 
         addMarksStudent: function(name, lessons, marks) {
-            let student = grupStudent.find(function(item) { 
+            let addMarks = grupStudent.find(function(item) { 
                return item.name === name;
             });
 
-            if (student.marks.length === 0) {
-                student.marks.push(null);
-                delete student.marks[0];
+            if (addMarks.marks.length === 0) {
+                addMarks.marks.push(null);
+                delete addMarks.marks[0];
             }
 
-            if(student) {
-                student.marks.push(marks)
+            if(addMarks) {
+                addMarks.marks.push(marks)
             }  
 
             console.log('Оценки студентов за занятие:' , name, 'Лекция: ', lessons, 'Оценка: ', marks)
         },
  
         averageMarksStudentName: function() {
-            let averageMarks = student.map(function(student) {
+            let averageMarks = grupStudent.map(function(student) {
                 return {
                     name: student.name,
                     averag: student.marks.reduce(function(sum, num) { 
@@ -77,7 +78,7 @@ function studentManagement(student) {
         },
 
         averageMarksGrupLessons: function() {
-            let arrMarks = student.map(function(item) {
+            let arrMarks = grupStudent.map(function(item) {
                 if (item.marks.indexOf(item.marks[1])) {
                     return item.marks[1]
                 }
@@ -85,13 +86,13 @@ function studentManagement(student) {
 
             let result = arrMarks.reduce(function(sum, marks) {
                 return sum + marks
-            }) / student.length;
+            }) / grupStudent.length;
 
             console.log('Лекция № 1 средняя оценка группы: ', result);
         },   
         
         sortStudentName: function() {
-            let sortName = student.map(function(item) { 
+            let sortName = grupStudent.map(function(item) { 
                 return item.name
             });
 
@@ -101,7 +102,7 @@ function studentManagement(student) {
         },
 
         sortStudentMarks: function() {
-            let sortMarks = student.map(function(student) {
+            let sortMarks = grupStudent.map(function(student) {
                 return {
                     name: student.name,
                     averag: student.marks.reduce(function(sum, num) { 
