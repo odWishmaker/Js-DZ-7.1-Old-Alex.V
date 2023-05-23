@@ -15,7 +15,6 @@
 
 
 let students = [];
-// let student = grupStudent;
 
 function makeStudent(name, age) {
     return {
