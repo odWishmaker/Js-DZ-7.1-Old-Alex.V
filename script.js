@@ -14,10 +14,9 @@
 // 3. Работоспособность всех методов продемонстрировать ниже
 
 
-let grupStudent = [];
-let student = grupStudent;
+let students = [];
+// let student = grupStudent;
 
-console.log(student)
 function makeStudent(name, age) {
     return {
         name: name,
@@ -26,11 +25,12 @@ function makeStudent(name, age) {
     };
 }
 
-function studentManagement(student) {
+function studentManagement(students) {
+    let grupStudent = students.slice(0);
 
     return {
         addStudent: function(name, age) {
-            grupStudent.push(makeStudent(name, age));
+            students.push(makeStudent(name, age));
 
             console.log('Студенты добавлен в группу: ', makeStudent(name, age))
         },
@@ -41,7 +41,7 @@ function studentManagement(student) {
             });
 
             if (index !== -1) {
-                grupStudent.splice(index, 1);
+                students.splice(index, 1);
             }
 
             console.log('Убрали студента из группы: ', name)
@@ -59,11 +59,11 @@ function studentManagement(student) {
 
             if(addMarks) {
                 addMarks.marks.push(marks)
-            }  
+            }
 
             console.log('Оценки студентов за занятие:' , name, 'Лекция: ', lessons, 'Оценка: ', marks)
         },
- 
+
         averageMarksStudentName: function() {
             let averageMarks = grupStudent.map(function(student) {
                 return {
@@ -120,43 +120,43 @@ function studentManagement(student) {
 }
 
 // add student
-studentManagement().addStudent('Валера', 19);
-studentManagement().addStudent('Никита', 22);
-studentManagement().addStudent('Аня', 20);
-studentManagement().addStudent('Альберт', 21);
-studentManagement().addStudent('Юля', 23);
+studentManagement(students).addStudent('Валера', 19);
+studentManagement(students).addStudent('Никита', 22);
+studentManagement(students).addStudent('Аня', 20);
+studentManagement(students).addStudent('Альберт', 21);
+studentManagement(students).addStudent('Юля', 23);
 
 // remove student
-studentManagement().removeStudent('Альберт');
+studentManagement(students).removeStudent('Альберт');
 
 // add marks and lessons
-studentManagement().addMarksStudent('Юля', 1, 10)
-studentManagement().addMarksStudent('Юля', 2, 8)
-studentManagement().addMarksStudent('Юля', 3, 11)
+studentManagement(students).addMarksStudent('Юля', 1, 10)
+studentManagement(students).addMarksStudent('Юля', 2, 8)
+studentManagement(students).addMarksStudent('Юля', 3, 11)
 
-studentManagement().addMarksStudent('Аня', 1, 8)
-studentManagement().addMarksStudent('Аня', 2, 11)
-studentManagement().addMarksStudent('Аня', 3, 6)
+studentManagement(students).addMarksStudent('Аня', 1, 8)
+studentManagement(students).addMarksStudent('Аня', 2, 11)
+studentManagement(students).addMarksStudent('Аня', 3, 6)
 
-studentManagement().addMarksStudent('Никита', 1, 6)
-studentManagement().addMarksStudent('Никита', 2, 8)
-studentManagement().addMarksStudent('Никита', 3, 3)
+studentManagement(students).addMarksStudent('Никита', 1, 6)
+studentManagement(students).addMarksStudent('Никита', 2, 8)
+studentManagement(students).addMarksStudent('Никита', 3, 3)
 
-studentManagement().addMarksStudent('Валера', 1, 7)
-studentManagement().addMarksStudent('Валера', 2, 9)
-studentManagement().addMarksStudent('Валера', 3, 12)
+studentManagement(students).addMarksStudent('Валера', 1, 7)
+studentManagement(students).addMarksStudent('Валера', 2, 9)
+studentManagement(students).addMarksStudent('Валера', 3, 12)
 
 // average marks student name
-studentManagement().averageMarksStudentName()
+studentManagement(students).averageMarksStudentName()
 
 // average marks grup lessons
-studentManagement().averageMarksGrupLessons()
+studentManagement(students).averageMarksGrupLessons()
 
 // sort student name
-studentManagement().sortStudentName()
+studentManagement(students).sortStudentName()
 
 // sort student marks
-studentManagement().sortStudentMarks()
+studentManagement(students).sortStudentMarks()
 
 
 
