@@ -78,7 +78,6 @@ function studentManagement(student) {
 
         averageMarksGrupLessons: function() {
             let arrMarks = student.map(function(item) {
-
                 if (item.marks.indexOf(item.marks[1])) {
                     return item.marks[1]
                 }
@@ -93,11 +92,11 @@ function studentManagement(student) {
         
         sortStudentName: function() {
             let sortName = student.map(function(item) { 
-                   return item.name
+                return item.name
             });
 
             sortName.sort()
-            
+
             console.log('Сортировка студентов по имени: ', sortName)
         },
 
@@ -112,9 +111,9 @@ function studentManagement(student) {
                 });
                 
                 sortMarks.sort(function(a, b) {
-               return b.averag - a.averag});
+                return b.averag - a.averag});
 
-            console.log('Сортированный список студентов по оценкам: ', sortMarks);   // по прбывать сделать округление...
+            console.log('Сортированный список студентов по оценкам: ', sortMarks);
         }
     };
 }
@@ -125,10 +124,11 @@ studentManagement().addStudent('Никита', 22);
 studentManagement().addStudent('Аня', 20);
 studentManagement().addStudent('Альберт', 21);
 studentManagement().addStudent('Юля', 23);
+
 // remove student
 studentManagement().removeStudent('Альберт');
-// add marks and lessons
 
+// add marks and lessons
 studentManagement().addMarksStudent('Юля', 1, 10)
 studentManagement().addMarksStudent('Юля', 2, 8)
 studentManagement().addMarksStudent('Юля', 3, 11)
