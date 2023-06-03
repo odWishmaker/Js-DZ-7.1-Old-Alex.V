@@ -13,8 +13,13 @@
 // (7). получение отсортированного по среднему балу списка студентов
 // 3. Работоспособность всех методов продемонстрировать ниже
 
-
-let students = [];
+let group = [
+    makeStudent('Валера', 19),
+    makeStudent('Никита', 22),
+    makeStudent('Аня', 20),
+    makeStudent('Альберт', 21),
+    makeStudent('Юля', 23),
+];
 
 function makeStudent(name, age) {
     return {
@@ -25,88 +30,87 @@ function makeStudent(name, age) {
 }
 
 function studentManagement(students) {
-    let grupStudent = students.slice(0);
+    let groupStudent = students.slice(0);
 
     return {
         addStudent: function(name, age) {
-            students.push(makeStudent(name, age));
+            groupStudent.push(makeStudent(name, age));
 
             console.log('Студенты добавлен в группу: ', makeStudent(name, age))
         },
 
         removeStudent: function(name) {
-            let index = grupStudent.findIndex(function(item) {
+            let index = groupStudent.findIndex(function(item) {
                 return item.name === name;
             });
 
             if (index !== -1) {
-                students.splice(index, 1);
+                groupStudent.splice(index, 1);
             }
 
-            console.log('Убрали студента из группы: ', name)
+            console.log('Убрали студента из группы: ', groupStudent, name)
         },
 
         addMarksStudent: function(name, lessons, marks) {
-            let addMarks = grupStudent.find(function(item) { 
-               return item.name === name;
-            });
-
-            if (addMarks.marks.length === 0) {
-                addMarks.marks.push(null);
-                delete addMarks.marks[0];
-            }
-
-            if(addMarks) {
-                addMarks.marks.push(marks)
-            }
-
+            groupStudent.forEach(function(item) {
+                if(item.name === name) {
+                    item.marks[lessons - 1] = marks
+                }
+             });
+ 
             console.log('Оценки студентов за занятие:' , name, 'Лекция: ', lessons, 'Оценка: ', marks)
         },
 
-        averageMarksStudentName: function() {
-            let averageMarks = grupStudent.map(function(student) {
-                return {
-                    name: student.name,
-                    averag: student.marks.reduce(function(sum, num) { 
-                    return sum + num
-                    }) / (student.marks.length - 1)
-                    };
-                });
+        averageMarksStudentName: function(name) {
+            let student
 
-            console.log('Средняя оценка cтудента за все лекции: ', averageMarks);
+            groupStudent.forEach(function(item) {
+                if (item.name === name) {
+                    return student = { 
+                        name: item.name,
+                        average: item.marks.reduce(function(sum, num) {
+                            return  num ? sum + num : sum;
+                        }) / item.marks.length
+                    }
+                }
+            })
+            console.log('Средняя оценка cтудента за все лекции: ', student);
         },
 
-        averageMarksGrupLessons: function() {
-            let arrMarks = grupStudent.map(function(item) {
-                if (item.marks.indexOf(item.marks[1])) {
-                    return item.marks[1]
+        averageMarksGrupLessons: function(lessons) {
+            let arrMarks = groupStudent.map(function(item) {
+                if (item.marks) {
+                    return item.marks[lessons - 1]
                 }
             });
 
             let result = arrMarks.reduce(function(sum, marks) {
-                return sum + marks
-            }) / grupStudent.length;
+                return marks ? sum + marks : sum;
+            }) / groupStudent.length;
 
-            console.log('Лекция № 1 средняя оценка группы: ', result);
-        },   
+            console.log('Лекция № ' + lessons + ' средняя оценка группы: ', result);
+        },
         
         sortStudentName: function() {
-            let sortName = grupStudent.map(function(item) { 
-                return item.name
-            });
-
-            sortName.sort()
+            let sortName = groupStudent.sort(function(a, b) {
+                if(a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
+            })
 
             console.log('Сортировка студентов по имени: ', sortName)
         },
 
         sortStudentMarks: function() {
-            let sortMarks = grupStudent.map(function(student) {
+            let sortMarks = groupStudent.map(function(student) {
                 return {
                     name: student.name,
                     averag: student.marks.reduce(function(sum, num) { 
-                     return sum + num
-                    }) / (student.marks.length - 1)
+                     return num ?  sum + num : sum
+                    }) / student.marks.length
                     };
                 });
                 
@@ -118,45 +122,43 @@ function studentManagement(students) {
     };
 }
 
+let managerGroup = studentManagement(group)
+
 // add student
-studentManagement(students).addStudent('Валера', 19);
-studentManagement(students).addStudent('Никита', 22);
-studentManagement(students).addStudent('Аня', 20);
-studentManagement(students).addStudent('Альберт', 21);
-studentManagement(students).addStudent('Юля', 23);
+managerGroup.addStudent('Роберт', 21)
 
 // remove student
-studentManagement(students).removeStudent('Альберт');
+managerGroup.removeStudent('Альберт')
 
-// add marks and lessons
-studentManagement(students).addMarksStudent('Юля', 1, 10)
-studentManagement(students).addMarksStudent('Юля', 2, 8)
-studentManagement(students).addMarksStudent('Юля', 3, 11)
+// // add marks and lessons
+managerGroup.addMarksStudent('Юля', 1, 10)
+managerGroup.addMarksStudent('Юля', 2, 8)
+managerGroup.addMarksStudent('Юля', 3, 11)
 
-studentManagement(students).addMarksStudent('Аня', 1, 8)
-studentManagement(students).addMarksStudent('Аня', 2, 11)
-studentManagement(students).addMarksStudent('Аня', 3, 6)
+managerGroup.addMarksStudent('Аня', 1, 8)
+managerGroup.addMarksStudent('Аня', 2, 11)
+managerGroup.addMarksStudent('Аня', 3, 6)
 
-studentManagement(students).addMarksStudent('Никита', 1, 6)
-studentManagement(students).addMarksStudent('Никита', 2, 8)
-studentManagement(students).addMarksStudent('Никита', 3, 3)
+managerGroup.addMarksStudent('Никита', 1, 6)
+managerGroup.addMarksStudent('Никита', 2, 8)
+managerGroup.addMarksStudent('Никита', 3, 3)
 
-studentManagement(students).addMarksStudent('Валера', 1, 7)
-studentManagement(students).addMarksStudent('Валера', 2, 9)
-studentManagement(students).addMarksStudent('Валера', 3, 12)
+managerGroup.addMarksStudent('Валера', 1, 7)
+managerGroup.addMarksStudent('Валера', 2, 9)
+managerGroup.addMarksStudent('Валера', 3, 12)
 
-// average marks student name
-studentManagement(students).averageMarksStudentName()
+managerGroup.addMarksStudent('Роберт', 1, 6)
+managerGroup.addMarksStudent('Роберт', 2, )
+managerGroup.addMarksStudent('Роберт', 3, 3)
 
-// average marks grup lessons
-studentManagement(students).averageMarksGrupLessons()
+// // average marks student name
+managerGroup.averageMarksStudentName('Роберт')
 
-// sort student name
-studentManagement(students).sortStudentName()
+// // average marks grup lessons
+managerGroup.averageMarksGrupLessons(1)
 
-// sort student marks
-studentManagement(students).sortStudentMarks()
+// // sort student name
+managerGroup.sortStudentName()
 
-
-
-
+// // sort student marks
+managerGroup.sortStudentMarks()
