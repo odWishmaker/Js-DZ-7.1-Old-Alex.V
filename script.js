@@ -34,9 +34,7 @@ function studentManagement(students) {
 
     return {
         addStudent: function(name, age) {
-            groupStudent.push(makeStudent(name, age));
-
-            console.log('Студенты добавлен в группу: ', makeStudent(name, age))
+            return groupStudent.push(makeStudent(name, age));
         },
 
         removeStudent: function(name) {
@@ -47,14 +45,15 @@ function studentManagement(students) {
             if (index !== -1) {
                 groupStudent.splice(index, 1);
             }
-
-            console.log('Убрали студента из группы: ', groupStudent, name)
+            return groupStudent
         },
 
         addMarksStudent: function(name, lessons, marks) {
             groupStudent.forEach(function(item) {
                 if(item.name === name) {
-                    item.marks[lessons - 1] = marks
+                    item.marks[lessons - 1] = marks 
+                } else {
+                    item.marks[lessons - 1] = item.marks[lessons - 1] || null;
                 }
              });
  
@@ -62,37 +61,24 @@ function studentManagement(students) {
         },
 
         averageMarksStudentName: function(name) {
-            let student
-
-            groupStudent.forEach(function(item) {
-                if (item.name === name) {
-                    return student = { 
-                        name: item.name,
-                        average: item.marks.reduce(function(sum, num) {
-                            return  num ? sum + num : sum;
-                        }) / item.marks.length
-                    }
-                }
-            })
-            console.log('Средняя оценка cтудента за все лекции: ', student);
+            return groupStudent.reduce(function(sum, student) {
+                if (student.name === name) {
+                    return student.marks.reduce(function(sum, mark) {
+                       return mark ? sum + mark : sum 
+                    }, 0) / student.marks.length
+                } 
+                return sum;
+            }, 0)
         },
 
         averageMarksGrupLessons: function(lessons) {
-            let arrMarks = groupStudent.map(function(item) {
-                if (item.marks) {
-                    return item.marks[lessons - 1]
-                }
-            });
-
-            let result = arrMarks.reduce(function(sum, marks) {
-                return marks ? sum + marks : sum;
-            }) / groupStudent.length;
-
-            console.log('Лекция № ' + lessons + ' средняя оценка группы: ', result);
+            return groupStudent.reduce(function(sum, student) {
+                return student.marks[lessons - 1] ? sum + student.marks[lessons - 1] : sum;
+            }, 0) / groupStudent.length;
         },
-        
+
         sortStudentName: function() {
-            let sortName = groupStudent.sort(function(a, b) {
+            return sortName = groupStudent.sort(function(a, b) {
                 if(a.name < b.name) {
                     return -1;
                 }
@@ -100,24 +86,22 @@ function studentManagement(students) {
                     return 1;
                 }
             })
-
-            console.log('Сортировка студентов по имени: ', sortName)
         },
 
         sortStudentMarks: function() {
             let sortMarks = groupStudent.map(function(student) {
                 return {
                     name: student.name,
+                    age: student.age,
                     averag: student.marks.reduce(function(sum, num) { 
-                     return num ?  sum + num : sum
+                        return num ?  sum + num : sum
                     }) / student.marks.length
                     };
                 });
                 
                 sortMarks.sort(function(a, b) {
                 return b.averag - a.averag});
-
-            console.log('Сортированный список студентов по оценкам: ', sortMarks);
+            return sortMarks
         }
     };
 }
@@ -125,10 +109,10 @@ function studentManagement(students) {
 let managerGroup = studentManagement(group)
 
 // add student
-managerGroup.addStudent('Роберт', 21)
+console.log('Студенты добавлен в группу: ', managerGroup.addStudent('Роберт', 21))
 
 // remove student
-managerGroup.removeStudent('Альберт')
+console.log(managerGroup.removeStudent('Альберт'))
 
 // // add marks and lessons
 managerGroup.addMarksStudent('Юля', 1, 10)
@@ -152,13 +136,13 @@ managerGroup.addMarksStudent('Роберт', 2, )
 managerGroup.addMarksStudent('Роберт', 3, 3)
 
 // // average marks student name
-managerGroup.averageMarksStudentName('Роберт')
+console.log('Средняя оценка студента по имени: ', managerGroup.averageMarksStudentName('Роберт'))
 
 // // average marks grup lessons
-managerGroup.averageMarksGrupLessons(1)
+console.log('Средняя оценка группы за занятие: ', managerGroup.averageMarksGrupLessons(1))
 
 // // sort student name
-managerGroup.sortStudentName()
+console.log('Сортировка студентов по имени: ', managerGroup.sortStudentName())
 
 // // sort student marks
-managerGroup.sortStudentMarks()
+console.log('Сортированный список студентов по оценкам: ', managerGroup.sortStudentMarks())
