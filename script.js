@@ -56,8 +56,7 @@ function studentManagement(students) {
                     item.marks[lessons - 1] = item.marks[lessons - 1] || null;
                 }
              });
- 
-            console.log('Оценки студентов за занятие:' , name, 'Лекция: ', lessons, 'Оценка: ', marks)
+            return groupStudent
         },
 
         averageMarksStudentName: function(name) {
@@ -93,28 +92,38 @@ function studentManagement(students) {
                 return {
                     name: student.name,
                     age: student.age,
+                    marks: student.marks,
                     averag: student.marks.reduce(function(sum, num) { 
                         return num ?  sum + num : sum
                     }) / student.marks.length
                     };
                 });
                 
-                sortMarks.sort(function(a, b) {
+            sortMarks.sort(function(a, b) {
                 return b.averag - a.averag});
-            return sortMarks
+
+            removeAveragesortMarks = sortMarks.map(function(ele) {
+                return {
+                    name: ele.name,
+                    age: ele.age,
+                    marks: ele.marks
+                }
+            })
+
+            return removeAveragesortMarks
         }
     };
 }
 
 let managerGroup = studentManagement(group)
 
-// add student
+//add student
 console.log('Студенты добавлен в группу: ', managerGroup.addStudent('Роберт', 21))
 
-// remove student
-console.log(managerGroup.removeStudent('Альберт'))
+//remove student
+console.log('Удалили студента с группы', managerGroup.removeStudent('Альберт'))
 
-// // add marks and lessons
+//add marks and lessons
 managerGroup.addMarksStudent('Юля', 1, 10)
 managerGroup.addMarksStudent('Юля', 2, 8)
 managerGroup.addMarksStudent('Юля', 3, 11)
@@ -135,14 +144,15 @@ managerGroup.addMarksStudent('Роберт', 1, 6)
 managerGroup.addMarksStudent('Роберт', 2, )
 managerGroup.addMarksStudent('Роберт', 3, 3)
 
-// // average marks student name
+console.log('Добавлены оценки студентам', managerGroup.addMarksStudent())
+//average marks student name
 console.log('Средняя оценка студента по имени: ', managerGroup.averageMarksStudentName('Роберт'))
 
-// // average marks grup lessons
+//average marks grup lessons
 console.log('Средняя оценка группы за занятие: ', managerGroup.averageMarksGrupLessons(1))
 
-// // sort student name
+//sort student name
 console.log('Сортировка студентов по имени: ', managerGroup.sortStudentName())
 
-// // sort student marks
+//sort student marks
 console.log('Сортированный список студентов по оценкам: ', managerGroup.sortStudentMarks())
